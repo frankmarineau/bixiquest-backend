@@ -19,6 +19,10 @@ exports.up = (knex, Promise) =>
       t.bigIncrements('id').primary()
       t.string('place_id')
       t.string('name')
+      t.string('image_url')
+      t.string('type')
+      t.string('description')
+      t.specificType('pos', 'geometry(point, 0)')
     })
 
 exports.down = (knex, Promise) =>
