@@ -30,6 +30,7 @@
     "url": "https://github.com/vol7/bondebarras-server"
   },
   "dependencies": {
+    "@google/maps": "^0.3.1",
     "babel-core": "^6.22.1",
     "babel-polyfill": "^6.13.0",
     "babel-preset-env": "^1.1.8",

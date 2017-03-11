@@ -11,5 +11,8 @@ export default {
   sendgrid: {
     email: 'info@bon-debarras.ca',
     key: process.env.SENDGRID_KEY
+  },
+  google: {
+    key: process.env.GOOGLE_KEY
   }
 }
