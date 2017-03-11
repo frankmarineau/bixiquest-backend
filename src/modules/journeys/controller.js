@@ -13,12 +13,12 @@ export async function create(ctx) {
 }
 
 export async function list(ctx) {
-  const journeys = await Journey.fetchAll()
+  const journeys = await Journey.fetchAll({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] })
   ctx.body = { journeys }
 }
 
 export async function get(ctx, next) {
-  const journey = await Journey.where({ id: this.params.id }).fetch({ withRelated: ['startingPoint', 'steps', 'steps.bixiStation', 'steps.places'] })
+  const journey = await Journey.where({ id: ctx.params.id }).fetch({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] })
   ctx.body = { journey }
   await next()
 }

@@ -6,7 +6,6 @@ exports.up = (knex, Promise) =>
       t.string('author')
       t.integer('distance')
       t.integer('duration')
-      t.bigInteger('bixi_station_id').references('id').inTable('bixi_stations')
       t.timestamps()
     })
     .createTable('journey_steps', (t) => {

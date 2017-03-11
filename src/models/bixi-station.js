@@ -6,6 +6,9 @@ import { Journey } from './journey'
 
 export const BixiStation = Bookshelf.Model.extend({
   tableName: 'bixi_stations',
+  geometry: ['pos'],
 
-  journeys: () => this.hasMany(Journey)
+  journeys () {
+    return this.hasMany(Journey)
+  }
 })

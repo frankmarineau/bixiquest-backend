@@ -6,6 +6,10 @@
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@google/maps/-/maps-0.3.1.tgz#3f10303033e53d3fc7bb9d6268de2266803bf781"
 
+"@types/node@^6.0.48":
+  version "6.0.65"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.65.tgz#c00faa7ffcfc9842b5dd7bf650872562504d5670"
+
 "JSV@>= 4.0.x":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/JSV/-/JSV-4.0.2.tgz#d077f6825571f82132f9dffaed587b4029feff57"
@@ -890,6 +894,14 @@ bookshelf-camelcase@^1.1.4:
   resolved "https://registry.yarnpkg.com/bookshelf-camelcase/-/bookshelf-camelcase-1.1.4.tgz#34d3083ca27c33991a183a58349bd1197f2066fa"
   dependencies:
     lodash "^4.13.1"
+
+bookshelf-postgis@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/bookshelf-postgis/-/bookshelf-postgis-0.2.1.tgz#055f4b87718773db4c7e6d3e68eb16f8fc3e544a"
+  dependencies:
+    knex "^0.12.6"
+    lodash "^4.17.4"
+    wkx "^0.4.1"
 
 bookshelf@^0.10.3:
   version "0.10.3"
@@ -2372,7 +2384,7 @@ knex-postgis@^0.2.0:
     geojsonhint "^1.0.0"
     knex "^0.7.5"
 
-knex@^0.12.1:
+knex@^0.12.1, knex@^0.12.6:
   version "0.12.6"
   resolved "https://registry.yarnpkg.com/knex/-/knex-0.12.6.tgz#a255f0ea03af2c2c94687a622c08acc1a9463c0e"
   dependencies:
@@ -2619,7 +2631,7 @@ lodash@^3.5.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.13.1, lodash@^4.16.1, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.0, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.13.1, lodash@^4.16.1, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.0, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3785,6 +3797,12 @@ winston@~2.3.1:
     eyes "0.1.x"
     isstream "0.1.x"
     stack-trace "0.0.x"
+
+wkx@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/wkx/-/wkx-0.4.1.tgz#2fc171b5e9cb55c6256fef4bde1f21be413befee"
+  dependencies:
+    "@types/node" "^6.0.48"
 
 word-wrap@^1.0.3:
   version "1.2.1"

@@ -8,20 +8,30 @@ export const Journey = Bookshelf.Model.extend({
   tableName: 'journeys',
   hasTimestamps: true,
 
-  startingPoint: () => this.belongsTo(BixiStation),
-  steps: () => this.hasMany(JourneyStep)
+  steps () {
+    return this.hasMany(JourneyStep)
+  }
 })
 
 export const JourneyStep = Bookshelf.Model.extend({
   tableName: 'journey_steps',
 
-  journey: () => this.belongsTo(Journey),
-  bixiStation: () => this.belongsTo(BixiStation),
-  places: () => this.hasMany(JourneyStepPlaces)
+  journey () {
+    return this.belongsTo(Journey)
+  },
+  bixiStation () {
+    return this.belongsTo(BixiStation)
+  },
+  places () {
+    return this.hasMany(JourneyStepPlace)
+  }
 })
 
 export const JourneyStepPlace = Bookshelf.Model.extend({
   tableName: 'journey_step_places',
+  geometry: ['pos'],
 
-  step: () => this.belongsTo(JourneyStep)
+  step () {
+    return this.belongsTo(JourneyStep)
+  }
 })

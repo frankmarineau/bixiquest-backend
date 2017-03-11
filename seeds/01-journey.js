@@ -7,8 +7,7 @@ exports.seed = function(knex, Promise) {
         name: 'First journey',
         author: 'Jesse Emond',
         distance: '2500',
-        duration: '1200',
-        bixi_station_id: 63
+        duration: '1200'
       }),
     ]))
 };
