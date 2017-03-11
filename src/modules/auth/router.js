@@ -9,12 +9,5 @@ export default [
     handlers: [
       auth.authUser
     ]
-  },
-  {
-    method: 'POST',
-    route: '/facebook',
-    handlers: [
-      auth.authUserFB
-    ]
   }
 ]

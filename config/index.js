@@ -8,10 +8,6 @@ export default {
     connection: process.env.DATABASE_URL,
     debug: false
   },
-  facebook: {
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET
-  },
   sendgrid: {
     email: 'info@bon-debarras.ca',
     key: process.env.SENDGRID_KEY
