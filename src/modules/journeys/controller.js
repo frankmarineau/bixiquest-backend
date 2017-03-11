@@ -9,7 +9,7 @@ export async function create(ctx) {
     ctx.throw(422, 'defaultError')
   }
 
-  ctx.body = { token, journey }
+  ctx.body = { journey }
 }
 
 export async function list(ctx) {
