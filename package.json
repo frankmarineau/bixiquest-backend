@@ -45,6 +45,7 @@
     "jsonwebtoken": "^7.1.9",
     "knex": "^0.12.1",
     "knex-cleaner": "^1.1.3",
+    "knex-postgis": "^0.2.0",
     "koa": "^2.0.0-alpha.7",
     "koa-body": "^1.5.0",
     "koa-convert": "^1.2.0",
