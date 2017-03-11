@@ -1,11 +1,10 @@
-
 exports.up = (knex, Promise) =>
   knex.schema
     .createTable('journeys', (t) => {
       t.bigIncrements('id').primary()
       t.string('name')
       t.string('author')
-      t.decimal('distance')
+      t.integer('distance')
       t.integer('duration')
       t.bigInteger('bixi_station_id').references('id').inTable('bixi_stations')
       t.timestamps()
@@ -17,6 +16,7 @@ exports.up = (knex, Promise) =>
     })
     .createTable('journey_step_places', (t) => {
       t.bigIncrements('id').primary()
+      t.bigInteger('journey_step_id').references('id').inTable('journey_steps')
       t.string('place_id')
       t.string('name')
       t.string('image_url')

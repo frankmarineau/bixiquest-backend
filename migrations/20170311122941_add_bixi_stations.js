@@ -1,4 +1,3 @@
-
 exports.up = (knex, Promise) =>
   knex.schema.createTable('bixi_stations', (t) => {
     t.bigInteger('id').primary()

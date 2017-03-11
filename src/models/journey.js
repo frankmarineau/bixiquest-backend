@@ -9,15 +9,14 @@ export const Journey = Bookshelf.Model.extend({
   hasTimestamps: true,
 
   startingPoint: () => this.belongsTo(BixiStation),
-
   steps: () => this.hasMany(JourneyStep)
 })
 
 export const JourneyStep = Bookshelf.Model.extend({
   tableName: 'journey_steps',
 
+  journey: () => this.belongsTo(Journey),
   bixiStation: () => this.belongsTo(BixiStation),
-
   places: () => this.hasMany(JourneyStepPlaces)
 })
 
