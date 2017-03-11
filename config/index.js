@@ -1,6 +1,6 @@
 require('dotenv').config({ silent: true })
 
-export default {
+module.exports = {
   port: process.env.PORT || 5000,
   jwtSecret: process.env.JWT_SECRET || 'awesome-jwt-secret',
   database: {
@@ -12,7 +12,7 @@ export default {
     email: 'info@bon-debarras.ca',
     key: process.env.SENDGRID_KEY
   },
-  google: {
-    key: process.env.GOOGLE_KEY
+  maps: {
+    key: process.env.GOOGLE_MAPS_API_KEY
   }
 }
