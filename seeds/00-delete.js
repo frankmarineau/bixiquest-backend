@@ -5,6 +5,6 @@ exports.seed = function(knex, Promise) {
     knex('journey_step_places').del(),
     knex('journey_steps').del(),
     knex('bixi_stations').del(),
-    knex('journeys').del(),
-  ]);
-};
+    knex('journeys').del()
+  ])
+}

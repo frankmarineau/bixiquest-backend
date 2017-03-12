@@ -11,10 +11,10 @@ exports.seed = function(knex, Promise) {
       }),
       knex('journeys').insert({
         id: 1,
-        name: 'Cultaral journey',
+        name: 'Cultural journey',
         author: 'Frank',
         distance: '17019',
         duration: '2521'
-      }),
+      })
     ]))
-};
+}

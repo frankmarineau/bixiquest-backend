@@ -1,9 +1,6 @@
-const fetch = require('node-fetch')
 const maps = require('../lib/maps')
 
 exports.seed = function(knex, Promise) {
-  const st = require('knex-postgis')(knex)
-  // Deletes ALL existing entries
   return knex('journey_step_places').del()
     .then(() => Promise.all([
       maps.place({ placeid: 'ChIJO3XLCfYayUwRg35RT57oQq4' }).asPromise().then((place) =>
@@ -16,7 +13,7 @@ exports.seed = function(knex, Promise) {
       maps.place({ placeid: 'ChIJAUCQ8a8byUwRPbs0Rks0E6s' }).asPromise().then((place) =>
         knex('journey_step_places').insert({
           journey_step_id: 2,
-          description: 'Great puzzles',
+          description: 'Great puzzles. I spent more than 2 hours trying to find my way out of the maze. I really needed to go to the bathroom!!',
           place: JSON.stringify(place.json.result)
         })
       ),
@@ -51,9 +48,9 @@ exports.seed = function(knex, Promise) {
       maps.place({ placeid: 'ChIJW6GqEl8ayUwRg5mIsKxweuU' }).asPromise().then((place) =>
         knex('journey_step_places').insert({
           journey_step_id: 6,
-          description: 'Unanimously the best Italian restaurant.',
+          description: 'Easily the best Italian restaurant there is in the Old Port. The reasonable fares, quiet atmosphere and stunning decor all compliment the delicious food.',
           place: JSON.stringify(place.json.result)
         })
-      ),
+      )
     ]))
-};
+}
