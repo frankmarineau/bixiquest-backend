@@ -1,11 +1,38 @@
 import { Journey } from '../../models/journey'
-import Promise from 'bluebird'
 import { Mural } from '../../models/mural'
-import polyline from 'polyline'
-
 import maps from '../../../lib/maps'
+import polyline from 'polyline'
+import Promise from 'bluebird'
 
-const routes_cache = {}
+const ramdis = {}
+
+async function getRoute(journey) {
+  if (!ramdis[journey.id]) {
+    const { steps: [ orig, ...rest ] } = journey
+    const dest = rest.pop()
+
+    const result = await maps.directions({
+      origin: { lng: orig.bixiStation.pos.coordinates[0], lat: orig.bixiStation.pos.coordinates[1] },
+      waypoints: rest.map((s) => ({ lng: s.bixiStation.pos.coordinates[0], lat: s.bixiStation.pos.coordinates[1] })),
+      destination: { lng: dest.bixiStation.pos.coordinates[0], lat: dest.bixiStation.pos.coordinates[1] },
+      mode: 'bicycling'
+    }).asPromise()
+
+    if (result.json && result.json.routes && result.json.routes[0]) {
+      const route = result.json.routes[0]
+      console.log(route)
+      ramdis[journey.id] = {
+        overview_path: polyline.decode(route.overview_polyline.points),
+        duration: route.legs.map(({ duration: { value } }) => value).reduce((a, b) => a + b),
+        distance: route.legs.map(({ distance: { value } }) => value).reduce((a, b) => a + b),
+        bounds: { ...route.bound },
+        legs: route.legs.map(({ distance, duration }) => ({ distance, duration }))
+      }
+    }
+  }
+
+  return ramdis[journey.id]
+}
 
 export async function create(ctx) {
   const journey = Journey.forge(ctx.request.body.journey)
@@ -20,7 +47,14 @@ export async function create(ctx) {
 }
 
 export async function list(ctx) {
-  const journeys = await Journey.fetchAll({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] })
+  const journeys = await Journey.fetchAll({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] }).then((journeys) => Promise.all(
+    journeys.toJSON().map((journey) => getRoute(journey).then(({ distance, duration, overview_path, legs }) => ({
+      ...journey, distance, duration,
+      overviewPath: overview_path,
+      steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
+    })))
+  ))
+
   ctx.body = { journeys }
 }
 
@@ -33,20 +67,15 @@ export async function get(ctx, next) {
     ).fetchAll().then(m => ({...s, murals: m.toJSON()}))
   ))
 
-  let route = routes_cache[journey.id]
-  if (!route) {
-    const { steps: [ orig, ...rest ] } = journey
-    const dest = rest.pop()
-    const result = await maps.directions({
-      origin: { lng: orig.bixiStation.pos.coordinates[0], lat: orig.bixiStation.pos.coordinates[1] },
-      waypoints: rest.map((s) => ({ lng: s.bixiStation.pos.coordinates[0], lat: s.bixiStation.pos.coordinates[1] })),
-      destination: { lng: dest.bixiStation.pos.coordinates[0], lat: dest.bixiStation.pos.coordinates[1] },
-      mode: 'bicycling'
-    }).asPromise()
-    route = routes_cache[journey.id] = result.json && result.json.routes && result.json.routes[0]
-  }
+  const { distance, duration, overview_path, legs } = await getRoute(journey)
 
-  ctx.body = { journey: { ...journey, overviewPath: polyline.decode(route.overview_polyline.points) } }
+  ctx.body = {
+    journey: {
+      ...journey, distance, duration,
+      overviewPath: overview_path,
+      steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
+    }
+  }
   await next()
 }
 
