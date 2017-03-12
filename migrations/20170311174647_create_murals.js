@@ -5,7 +5,7 @@ exports.up = (knex, Promise) =>
     t.string('address')
     t.string('image_url')
     t.string('organisation')
-    t.specificType('pos', 'geometry(point, 0)')
+    t.specificType('pos', 'geometry(point, 4326)')
   })
 
 exports.down = (knex, Promise) =>

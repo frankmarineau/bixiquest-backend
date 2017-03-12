@@ -11,7 +11,7 @@ exports.seed = function(knex, Promise) {
         id: e.id,
         num: e.n,
         name: e.s,
-        pos: st.makePoint(e.lo, e.la)
+        pos: st.geomFromText(`POINT(${e.lo} ${e.la})`, 4326)
       })
     )))
 };

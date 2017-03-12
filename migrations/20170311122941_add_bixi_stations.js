@@ -3,7 +3,7 @@ exports.up = (knex, Promise) =>
     t.bigInteger('id').primary()
     t.string('num')
     t.string('name')
-    t.specificType('pos', 'geometry(point, 0)')
+    t.specificType('pos', 'geometry(point, 4326)')
   })
 
 exports.down = (knex, Promise) =>

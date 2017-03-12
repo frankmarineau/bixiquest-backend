@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
                          address: e.properties.adresse,
                          image_url: e.properties.image,
                          organisation: e.properties.organisation,
-                         pos: st.makePoint(e.properties.longitude, e.properties.latitude)
+                         pos: st.geomFromText(`POINT(${e.properties.longitude} ${e.properties.latitude})`, 4326)
                        })
                       )))
 };
