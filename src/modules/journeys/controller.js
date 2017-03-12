@@ -2,6 +2,8 @@ import { Journey } from '../../models/journey'
 import Promise from 'bluebird'
 import { Mural } from '../../models/mural'
 
+import maps from '../../../lib/maps'
+
 export async function create(ctx) {
   const journey = Journey.forge(ctx.request.body.journey)
 
@@ -32,6 +34,18 @@ export async function get(ctx, next) {
 
   ctx.body = { journey }
   await next()
+}
+
+export async function path(ctx) {
+  const { steps: [ orig, ...rest ] } = ctx.body.journey.toJSON()
+  const dest = rest.pop()
+  const result = await maps.directions({
+    origin: { lng: orig.bixiStation.pos.coordinates[0], lat: orig.bixiStation.pos.coordinates[1] },
+    waypoints: rest.map((s) => ({ lng: s.bixiStation.pos.coordinates[0], lat: s.bixiStation.pos.coordinates[1] })),
+    destination: { lng: dest.bixiStation.pos.coordinates[0], lat: dest.bixiStation.pos.coordinates[1] },
+    mode: 'bicycling'
+  }).asPromise()
+  ctx.body = { result }
 }
 
 export async function update(ctx) {

@@ -16,12 +16,8 @@ exports.up = (knex, Promise) =>
     .createTable('journey_step_places', (t) => {
       t.bigIncrements('id').primary()
       t.bigInteger('journey_step_id').references('id').inTable('journey_steps')
-      t.string('place_id')
-      t.string('name')
-      t.string('image_url')
-      t.string('type')
       t.string('description')
-      t.specificType('pos', 'geometry(point, 4326)')
+      t.json('place')
     })
 
 exports.down = (knex, Promise) =>

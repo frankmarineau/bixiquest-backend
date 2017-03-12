@@ -25,6 +25,14 @@ export default [
     ]
   },
   {
+    method: 'GET',
+    route: '/:id/path',
+    handlers: [
+      journey.get,
+      journey.path
+    ]
+  },
+  {
     method: 'PUT',
     route: '/:id',
     handlers: [
