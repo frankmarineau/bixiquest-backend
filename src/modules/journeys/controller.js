@@ -6,7 +6,7 @@ import Promise from 'bluebird'
 
 const ramdis = {}
 
-async function getRoute(journey) {
+async function getBikeRoute(journey) {
   if (!ramdis[journey.id]) {
     const { steps: [ orig, ...rest ] } = journey
     const dest = rest.pop()
@@ -33,6 +33,32 @@ async function getRoute(journey) {
   return ramdis[journey.id]
 }
 
+async function getWalkDistance(pos, journey) {
+  const { steps: [ orig, ...rest ] } = journey
+
+  if (!pos || pos.lng === undefined || pos.lat === undefined) return {}
+
+  const result = await maps.distanceMatrix({
+    origins: [{ lng: pos.lng, lat: pos.lat }],
+    destinations: [{ lng: orig.bixiStation.pos.coordinates[0], lat: orig.bixiStation.pos.coordinates[1] }],
+    mode: 'walking'
+  }).asPromise()
+
+  console.log(result)
+
+  if (result.json && result.json.rows && result.json.rows[0] && result.json.rows[0].elements[0]) {
+    const { distance, duration } = result.json.rows[0].elements[0]
+    return { distance, duration }
+  } else {
+    return {}
+  }
+}
+
+async function getLocationData(pos, journey) {
+  const [ route, walk ] = await Promise.all([getBikeRoute(journey), getWalkDistance(pos, journey)])
+  return { ...route, walk }
+}
+
 export async function create(ctx) {
   const journey = Journey.forge(ctx.request.body.journey)
 
@@ -46,12 +72,14 @@ export async function create(ctx) {
 }
 
 export async function list(ctx) {
+  const pos = { lng: ctx.query.lng, lat: ctx.query.lat }
+
   const journeys = await Journey.fetchAll({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] }).then((journeys) => Promise.all(
-    journeys.toJSON().map((journey) => getRoute(journey).then(({ distance, duration, bounds, overview_path, legs }) => ({
+    journeys.toJSON().map((journey) => getLocationData(pos, journey).then(({ distance, duration, bounds, overview_path, legs, walk }) => ({
       ...journey, distance, duration,
       overviewBounds: bounds,
       overviewPath: overview_path,
-      steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
+      steps: journey.steps.map((s, i) => ({ ...s, ...(i === 0 ? walk : legs[i - 1]) }))
     })))
   ))
 
@@ -59,6 +87,8 @@ export async function list(ctx) {
 }
 
 export async function get(ctx, next) {
+  const pos = { lng: ctx.query.lng, lat: ctx.query.lat }
+
   const journey = (await Journey.where({ id: ctx.params.id }).fetch({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] })).toJSON();
 
   journey.steps = await Promise.all(journey.steps.map(s =>
@@ -67,14 +97,14 @@ export async function get(ctx, next) {
     ).fetchAll().then(m => ({...s, murals: m.toJSON()}))
   ))
 
-  const { distance, duration, bounds, overview_path, legs } = await getRoute(journey)
+  const { distance, duration, bounds, overview_path, legs, walk } = await getLocationData(pos, journey)
 
   ctx.body = {
     journey: {
       ...journey, distance, duration,
       overviewBounds: bounds,
       overviewPath: overview_path,
-      steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
+      steps: journey.steps.map((s, i) => ({ ...s, ...(i === 0 ? walk : legs[i - 1]) }))
     }
   }
   await next()
