@@ -18,5 +18,25 @@ exports.seed = function(knex, Promise) {
         journey_id: 0,
         bixi_station_id: 25
       }),
+      knex('journey_steps').insert({
+        id: 3,
+        journey_id: 1,
+        bixi_station_id: 246
+      }),
+      knex('journey_steps').insert({
+        id: 4,
+        journey_id: 1,
+        bixi_station_id: 548
+      }),
+      knex('journey_steps').insert({
+        id: 5,
+        journey_id: 1,
+        bixi_station_id: 36
+      }),
+      knex('journey_steps').insert({
+        id: 6,
+        journey_id: 1,
+        bixi_station_id: 47
+      }),
     ]))
 };

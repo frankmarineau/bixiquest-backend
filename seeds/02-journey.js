@@ -1,13 +1,20 @@
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return Promise.resolve()
+  return knex('journeys').del()
     .then(() => Promise.all([
       knex('journeys').insert({
         id: 0,
-        name: 'First journey',
+        name: 'First quest',
         author: 'Jesse Emond',
         distance: '2500',
         duration: '1200'
+      }),
+      knex('journeys').insert({
+        id: 1,
+        name: 'Cultaral journey',
+        author: 'Frank',
+        distance: '17019',
+        duration: '2521'
       }),
     ]))
 };
