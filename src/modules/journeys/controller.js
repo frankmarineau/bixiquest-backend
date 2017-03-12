@@ -37,7 +37,7 @@ export async function get(ctx, next) {
 }
 
 export async function path(ctx) {
-  const { steps: [ orig, ...rest ] } = ctx.body.journey.toJSON()
+  const { steps: [ orig, ...rest ] } = ctx.body.journey
   const dest = rest.pop()
   const result = await maps.directions({
     origin: { lng: orig.bixiStation.pos.coordinates[0], lat: orig.bixiStation.pos.coordinates[1] },
