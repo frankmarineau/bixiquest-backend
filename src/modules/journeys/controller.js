@@ -25,17 +25,11 @@ export async function get(ctx, next) {
   const steps = await Promise.all(
     journey.steps.map(
       s => Mural.query(
-        qb => qb.whereRaw(`ST_DWithin(ST_SetSRID(ST_MakePoint(${s.bixiStation.pos.coordinates.join(',')}), 4326), pos, 1)`)
+        qb => qb.whereRaw(`ST_Distance(pos::geography, ST_SetSRID(ST_MakePoint(${s.bixiStation.pos.coordinates.join(',')}), 4326)) <= 1000`)
       ).fetchAll().then(m => ({...s, murals: m.toJSON()}))
     ));
-
   journey.steps = steps;
 
-  // const journey = await Journey.query(qb => {
-  //   qb.crossJoin('murals')
-  //     .whereRaw('ST_DWithin(murals.pos, bixi_stations.pos, 1000000')
-  // }).where({ id: ctx.params.id })
-  //       .fetch({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] })
   ctx.body = { journey }
   await next()
 }
