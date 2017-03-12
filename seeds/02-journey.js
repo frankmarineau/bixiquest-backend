@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('journeys').del()
+  return Promise.resolve()
     .then(() => Promise.all([
       knex('journeys').insert({
         id: 0,
