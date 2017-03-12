@@ -44,13 +44,11 @@ async function getWalkDistance(pos, journey) {
     mode: 'walking'
   }).asPromise()
 
-  console.log(result)
-
   if (result.json && result.json.rows && result.json.rows[0] && result.json.rows[0].elements[0]) {
-    const { distance, duration } = result.json.rows[0].elements[0]
-    return { distance, duration }
-  } else {
-    return {}
+    return {
+      distance: result.json.rows[0].elements[0].distance,
+      duration: result.json.rows[0].elements[0].distance
+    }
   }
 }
 
