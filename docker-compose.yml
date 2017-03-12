@@ -1,0 +1,27 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.6.1
+    volumes:
+      - /etc/postgresql
+      - /var/log/postgresql
+      - /var/lib/postgresql
+    environment:
+      POSTGRES_DB: quest
+      POSTGRES_USER: quest
+    ports:
+      - "5543"
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgres://quest@db/quest
+      JWT_SECRET: meow
+      SENDGRID_EMAIL: yo@lo.com
+      SENDGRID_KEY: ¯\_(ツ)_/¯
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
