@@ -24,7 +24,7 @@ async function getRoute(journey) {
         overview_path: polyline.decode(route.overview_polyline.points),
         duration: route.legs.map(({ duration: { value } }) => value).reduce((a, b) => a + b),
         distance: route.legs.map(({ distance: { value } }) => value).reduce((a, b) => a + b),
-        bounds: { ...route.bound },
+        bounds: { ...route.bounds },
         legs: route.legs.map(({ distance, duration }) => ({ distance, duration }))
       }
     }
