@@ -20,7 +20,6 @@ async function getRoute(journey) {
 
     if (result.json && result.json.routes && result.json.routes[0]) {
       const route = result.json.routes[0]
-      console.log(route)
       ramdis[journey.id] = {
         overview_path: polyline.decode(route.overview_polyline.points),
         duration: route.legs.map(({ duration: { value } }) => value).reduce((a, b) => a + b),

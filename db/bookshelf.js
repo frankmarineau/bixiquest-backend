@@ -8,12 +8,12 @@ bookshelf.plugin([
   'bookshelf-postgis'
 ])
 
-knex.on('query', function (query) {
-  var params = query.bindings.slice();
-  var q = query.sql.replace(/\?/g, function () {
-    return '\'' + params.shift() + '\'';
-  });
-  console.log(new Date().toISOString(), '\n', q, '\n');
-});
+// knex.on('query', function (query) {
+//   var params = query.bindings.slice();
+//   var q = query.sql.replace(/\?/g, function () {
+//     return '\'' + params.shift() + '\'';
+//   });
+//   console.log(new Date().toISOString(), '\n', q, '\n');
+// });
 
 export default bookshelf
