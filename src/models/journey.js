@@ -15,6 +15,7 @@ export const Journey = Bookshelf.Model.extend({
 
 export const JourneyStep = Bookshelf.Model.extend({
   tableName: 'journey_steps',
+  hidden: ['journeyId'],
 
   journey () {
     return this.belongsTo(Journey)
@@ -29,6 +30,7 @@ export const JourneyStep = Bookshelf.Model.extend({
 
 export const JourneyStepPlace = Bookshelf.Model.extend({
   tableName: 'journey_step_places',
+  hidden: ['journeyStepId'],
   geometry: ['pos'],
 
   step () {
