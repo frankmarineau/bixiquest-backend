@@ -48,8 +48,9 @@ export async function create(ctx) {
 
 export async function list(ctx) {
   const journeys = await Journey.fetchAll({ withRelated: ['steps', 'steps.bixiStation', 'steps.places'] }).then((journeys) => Promise.all(
-    journeys.toJSON().map((journey) => getRoute(journey).then(({ distance, duration, overview_path, legs }) => ({
+    journeys.toJSON().map((journey) => getRoute(journey).then(({ distance, duration, bounds, overview_path, legs }) => ({
       ...journey, distance, duration,
+      overviewBounds: bounds,
       overviewPath: overview_path,
       steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
     })))
@@ -67,11 +68,12 @@ export async function get(ctx, next) {
     ).fetchAll().then(m => ({...s, murals: m.toJSON()}))
   ))
 
-  const { distance, duration, overview_path, legs } = await getRoute(journey)
+  const { distance, duration, bounds, overview_path, legs } = await getRoute(journey)
 
   ctx.body = {
     journey: {
       ...journey, distance, duration,
+      overviewBounds: bounds,
       overviewPath: overview_path,
       steps: journey.steps.map((s, i) => i === 0 ? s : { ...s, ...legs[i - 1] })
     }
